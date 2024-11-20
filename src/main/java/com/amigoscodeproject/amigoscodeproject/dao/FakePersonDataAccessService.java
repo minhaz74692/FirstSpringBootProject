@@ -11,8 +11,16 @@ import java.util.UUID;
 public class FakePersonDataAccessService implements  PersonDao{
     private  static List<Person> DB = new ArrayList<>();
     @Override
-    public  int insertPerson(UUID id , Person person){
+    public  Person insertPerson(UUID id , Person person){
         DB.add(new Person(id, person.getName()));
-        return  1;
+      return   DB.stream()
+                .filter(p -> p.getId() == id) // Filter by id
+                .findFirst() // Find the first match
+                .orElse(null);
+    }
+
+    @Override
+    public List<Person> getPersons(){
+      return  DB;
     }
 }
