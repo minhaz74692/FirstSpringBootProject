@@ -4,13 +4,10 @@ import com.amigoscodeproject.amigoscodeproject.model.Person;
 import com.amigoscodeproject.amigoscodeproject.service.PersonService;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("api/v1/person")
 @RestController
@@ -29,7 +26,11 @@ public class PersonController {
 
     @GetMapping
     public List<Person> getPersons() {
-
       return  personService.getPersons();
+    }
+
+    @GetMapping(path = "{id}")
+    public Person getPersonById(@PathVariable("id") UUID id) {
+      return  personService.selectPersonById(id).orElse(null);
     }
 }

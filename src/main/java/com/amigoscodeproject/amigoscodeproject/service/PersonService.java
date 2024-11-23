@@ -3,7 +3,7 @@ package com.amigoscodeproject.amigoscodeproject.service;
 import com.amigoscodeproject.amigoscodeproject.dao.PersonDao;
 import com.amigoscodeproject.amigoscodeproject.model.Person;
 
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,5 +24,9 @@ public class PersonService {
 
     public List<Person> getPersons(){
         return personDao.getPersons();
+    }
+
+    public Optional<Person> selectPersonById(UUID id){
+        return personDao.selectPersonById(id);
     }
 }
