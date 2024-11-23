@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Map;
 
 @Repository("fakeDao")
 public class FakePersonDataAccessService implements  PersonDao{
@@ -32,13 +33,26 @@ public class FakePersonDataAccessService implements  PersonDao{
     }
 
     @Override
-    public Object deletePerson(UUID id) {
-        return null;
+    public String deletePerson(UUID id) {
+        Optional<Person> personMaybe = selectPersonById(id);
+        if(personMaybe.isEmpty()){
+            return  "No Person Found with this id";
+        }else{
+         DB.remove(personMaybe.get());
+         return "Person Deleted Successfully";
+        }
     }
 
     @Override
-    public Object updatePerson(UUID id, Person person) {
-        return null;
+    public int updatePerson(UUID id, Person newPerson) {
+        return selectPersonById(id).map(person -> {
+            int indexToDelete = DB.indexOf(person);
+            if(indexToDelete>=0){
+                DB.set(indexToDelete, new Person(id, newPerson.getName()));
+                return 1;
+            }
+             return  0;
+        }).orElse(0);
     }
 
 
